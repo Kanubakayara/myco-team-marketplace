@@ -1,0 +1,53 @@
+name: validate-plugins
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  CLAUDE_CODE_VERSION: "2.1.303"
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    outputs:
+      plugins: ${{ steps.list.outputs.plugins }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}
+      - name: Validate marketplace.json
+        run: claude plugin validate --strict .
+      - name: Versions match between marketplace.json and plugin.json
+        run: |
+          fail=0
+          for row in $(jq -c '.plugins[] | {name, source, version}' .claude-plugin/marketplace.json); do
+            name=$(jq -r .name <<<"$row")
+            want=$(jq -r .version <<<"$row")
+            got=$(jq -r .version "$(jq -r .source <<<"$row")/.claude-plugin/plugin.json")
+            if [ "$want" != "$got" ]; then
+              echo "::error::$name: marketplace.json=$want, plugin.json=$got"
+              fail=1
+            fi
+          done
+          exit $fail
+      - id: list
+        run: echo "plugins=$(jq -c '[.plugins[].name]' .claude-plugin/marketplace.json)" >> "$GITHUB_OUTPUT"
+
+  plugin-validate:
+    needs: manifest
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin: ${{ fromJson(needs.manifest.outputs.plugins) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}
+      - run: claude plugin validate --strict ./plugins/${{ matrix.plugin }}

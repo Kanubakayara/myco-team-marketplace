@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python \"${CLAUDE_PLUGIN_ROOT}\"/hooks/check_bc_imports.py",
+            "timeout": 10,
+            "statusMessage": "dependency rule"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in *.py) cd \"$CLAUDE_PROJECT_DIR\" && uv run --quiet ruff format --quiet \"$f\" && { uv run --quiet ruff check --fix --quiet \"$f\" 1>&2 || exit 2; };; esac",
+            "timeout": 30,
+            "statusMessage": "ruff format + check"
+          }
+        ]
+      }
+    ]
+  }
+}
