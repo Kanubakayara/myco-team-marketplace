@@ -1,7 +1,7 @@
 {
   "name": "my-toolkit",
-  "version": "1.0.0",
-  "description": "myco-ai toolkit: scaffold infrastructure adapters, debug cover recognition, enforce the dependency rule and ruff on every edit",
+  "version": "2.0.0",
+  "description": "myco-ai toolkit: plan, build and ship a vertical slice feature; scaffold infrastructure adapters; debug cover recognition; enforce the dependency rule, ruff on every edit and green lint+tests before every commit",
   "author": {
     "name": "Andrii Minakov"
   }

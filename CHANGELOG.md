@@ -5,6 +5,24 @@
 
 ## my-toolkit
 
+### [2.0.0] — 2026-10-22
+
+#### Breaking
+
+- Видалено `/my-toolkit:hello` — до проєкту не стосувалась.
+
+#### Added
+
+- Skill `feature-plan` — план наскрізного зрізу по шарах, допущення, live probe джерела до коду.
+- Skill `feature-build` — усі шари, wiring і три тест-файли за один прохід до зелених `make lint && make test`.
+- Skill `feature-ship` — документація, lint + тести, коміт з позначкою плагіна, рядок у `LOG.md`.
+- Хук `PreToolUse` (`Bash`): `git commit` блокується, поки `make lint` або `make test` червоні.
+- `LICENSE` (MIT).
+
+#### Changed
+
+- README плагіна: секції Purpose / Install / Commands / Skills / Hooks.
+
 ### [1.0.0] — 2026-10-19
 
 #### Added

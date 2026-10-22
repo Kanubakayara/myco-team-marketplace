@@ -11,6 +11,17 @@
             "statusMessage": "dependency rule"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/commit_gate.sh",
+            "timeout": 180,
+            "statusMessage": "commit gate: lint + tests"
+          }
+        ]
       }
     ],
     "PostToolUse": [
