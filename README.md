@@ -32,7 +32,7 @@ Marketplace плагінів Claude Code для команди платформ�
 
 | Плагін | Версія | Що робить |
 |---|---|---|
-| [`my-toolkit`](plugins/my-toolkit/README.md) | 1.0.0 | myco-ai: scaffold адаптерів, діагностика розпізнавання обкладинок, хуки dependency rule і ruff |
+| [`my-toolkit`](plugins/my-toolkit/README.md) | 2.0.0 | myco-ai: наскрізна фіча за три команди (`feature-plan` / `-build` / `-ship`), scaffold адаптерів, діагностика розпізнавання, хуки dependency rule, ruff і commit gate |
 
 ## Супровідники
 
